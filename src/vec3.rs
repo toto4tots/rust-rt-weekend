@@ -1,34 +1,24 @@
 
 use std:: fmt;
 use std::ops::{Add, Sub};
+use std::convert::From;
 
 pub fn close_enough(a: f64, b: f64) -> bool {
     (a - b).abs() < 1e-5
 }
 
-pub fn dot(u: &Vec3, v: &Vec3) -> f64 {
-    u.e[0] * v.e[0] + 
-    u.e[1] * v.e[1] + 
-    u.e[2] * v.e[2] 
-}
 
-pub fn cross(u: &Vec3, v: &Vec3) -> Vec3 {
-    Vec3::new(
-        u.e[1] * v.e[2] - u.e[2] * v.e[1],
-        u.e[2] * v.e[0] - u.e[0] * v.e[2],
-        u.e[0] * v.e[1] - u.e[1] * v.e[0]
-    )
-}
 
-#[derive(Debug)]
+
+#[derive(Debug, Clone, Copy)]
 pub struct Vec3 {
-    e: Vec<f64>
+    e: [f64; 3]
 }
 
 impl Vec3 {
     pub fn new(x: f64, y: f64, z: f64) -> Self {
         Vec3 {
-            e: vec![x, y, z]
+            e: [x, y, z]
         }
     }
     pub fn x(&self) -> f64 {
@@ -44,14 +34,10 @@ impl Vec3 {
     }
 
     pub fn scale(&self, val: f64) -> Vec3 {
-        let mut v = vec![];
-        for i in 0..self.len() {
-            v.push(self.e[i] * val);
-        }
-        Vec3::new(v[0], v[1], v[2])
+        Vec3::new(self.e[0] * val, self.e[1] * val, self.e[2] *val)
     }
 
-    pub fn multiply(&self, v: &Vec3) -> Vec3 {
+    pub fn multiply(&self, v: Vec3) -> Vec3 {
         Vec3::new(self.e[0] * v.e[0], self.e[1] * v.e[1], self.e[2] * v.e[2])
     }
     
@@ -66,11 +52,34 @@ impl Vec3 {
     fn len(&self) -> usize {
         self.e.len()
     }
+
+    pub fn dot(&self, v: Vec3) -> f64 {
+        self.e[0] * v.e[0] + 
+        self.e[1] * v.e[1] + 
+        self.e[2] * v.e[2] 
+    }
+
+    pub fn cross(&self, v: Vec3) -> Vec3 {
+        Vec3::new(
+            self.e[1] * v.e[2] - self.e[2] * v.e[1],
+            self.e[2] * v.e[0] - self.e[0] * v.e[2],
+            self.e[0] * v.e[1] - self.e[1] * v.e[0]
+        )
+    }
+    
 }
 
-impl<'a> Add<&'a Vec3> for &'a Vec3 {
+impl From<[f64; 3]> for Vec3 {
+    fn from(arr: [f64; 3]) -> Self {
+        Vec3 {
+            e: arr
+        }
+    }
+}
+
+impl Add<Vec3> for Vec3 {
     type Output = Vec3;
-    fn add(self, other: &'a Vec3) -> Vec3 {
+    fn add(self, other: Vec3) -> Vec3 {
         Vec3::new(
             self.e[0] + other.e[0], 
             self.e[1] + other.e[1], 
@@ -79,9 +88,9 @@ impl<'a> Add<&'a Vec3> for &'a Vec3 {
     }
 }
 
-impl<'a> Sub<&'a Vec3> for &'a Vec3 {
+impl Sub<Vec3> for Vec3 {
     type Output = Vec3;
-    fn sub(self, other: &'a Vec3) -> Vec3 {
+    fn sub(self, other: Vec3) -> Vec3 {
         Vec3::new(
             self.e[0] - other.e[0], 
             self.e[1] - other.e[1], 
