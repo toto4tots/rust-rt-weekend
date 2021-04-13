@@ -153,5 +153,4 @@ pub fn unit_vector() {
         let ret = Vec3::new(1.0 / div, 2.0 / div, 3.0 / div);
         assert_eq!(v.unit_vector(), ret);
     }
-
 }
