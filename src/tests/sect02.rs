@@ -1,5 +1,8 @@
 
 use image::{RgbImage, Rgb};
+use crate::{
+    drawutils
+};
 
 #[test]
 pub fn draw() {
@@ -8,6 +11,7 @@ pub fn draw() {
     let image_height = 256;
     let fimage_height = 256f64;
     let mut img = RgbImage::new(image_width, image_height);
+    let mut canvas = drawutils::Canvas::new(image_width, image_height);
 
     for j in (0..image_height).rev() {
         // println!("Scanlines remaining: {}", j);
@@ -21,12 +25,11 @@ pub fn draw() {
             let ub = (255.999 * b) as u8;
 
             if image_height - j < image_height && i < image_width {
-                img.put_pixel(i, image_height - j, Rgb([ur, ug, ub,]));
-            }   
+                canvas.set(i, image_height - j, vec![r, g, b]);
+            }
         }
-        // println!("Done");
     }
-    img.save("image.png").unwrap();
+    canvas.save("image2.png");
 
 }
 

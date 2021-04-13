@@ -11,7 +11,6 @@ pub fn create_vect() {
         assert_eq!(0.5, v1.x());
         assert_eq!(1.8, v1.y());
         assert_eq!(12.0, v1.z());
-        // println!("{}", v1); // [0.5, 1.8, 12.0]
     }
 }
 
