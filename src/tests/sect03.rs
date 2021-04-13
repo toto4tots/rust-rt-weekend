@@ -139,3 +139,19 @@ pub fn test_from() {
     let v2 = Vec3::new(1.0, 2.0, 3.0);
     assert_eq!(v, v2);
 }
+
+#[test]
+pub fn unit_vector() {
+    {
+        let v: Vec3 = [4.0, 0.0, 0.0].into();
+        let ret: Vec3 = [1.0, 0.0, 0.0].into();
+        assert_eq!(v.unit_vector(), ret);
+    }
+    {
+        let div = (14 as f64).sqrt();
+        let v = Vec3::new(1.0, 2.0, 3.0);
+        let ret = Vec3::new(1.0 / div, 2.0 / div, 3.0 / div);
+        assert_eq!(v.unit_vector(), ret);
+    }
+
+}
