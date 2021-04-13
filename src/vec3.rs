@@ -85,9 +85,10 @@ impl<I: Into<Vec3>> Add<I> for Vec3 {
     }
 }
 
-impl Sub<Vec3> for Vec3 {
+impl<I: Into<Vec3>> Sub<I> for Vec3 {
     type Output = Vec3;
-    fn sub(self, other: Vec3) -> Vec3 {
+    fn sub(self, i: I) -> Vec3 {
+        let other = i.into();
         Vec3::new(
             self.e[0] - other.e[0], 
             self.e[1] - other.e[1], 
@@ -96,9 +97,10 @@ impl Sub<Vec3> for Vec3 {
     }
 }
 
-impl Mul<Vec3> for Vec3 {
+impl<I: Into<Vec3>> Mul<I> for Vec3 {
     type Output = Vec3;
-    fn mul(self, other: Vec3) -> Vec3 {
+    fn mul(self, i: I) -> Vec3 {
+        let other = i.into();
         Vec3::new(
             self.e[0] * other.e[0],
             self.e[1] * other.e[1],
