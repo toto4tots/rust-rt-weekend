@@ -7,22 +7,27 @@ use crate::{
 };
 
 pub fn ray_color(r: &Ray) -> vec3::Vec3 {
-    if hit_sphere(Point::new(0, 0, -1), 0.5, r) {
-        return Color::new(1, 0, 0);
+    let t = hit_sphere(Point::new(0, 0, -1), 0.5, r);
+    if t > 0.0 {
+        let n = (r.at(t) - Vec3::new(0, 0, -1)).unit_vector();
+        return Color::new(n.x() + 1.0, n.y() + 1.0, n.z() + 1.0).scale(0.5);
     }
     let unit_direction = r.direction.unit_vector();
     let t = 0.5 * (unit_direction.y() + 1.0);
     Color::new(1, 1, 1).scale(1.0 - t) + Color::new(0.5, 0.7, 1.0).scale(t)
 }
 
-pub fn hit_sphere(center: Point, radius: f64, r: &Ray) -> bool {
+pub fn hit_sphere(center: Point, radius: f64, r: &Ray) -> f64 {
     let oc = r.origin - center;
     let a = r.direction.dot(r.direction);
     let b = 2.0 * oc.dot(r.direction);
     let c = oc.dot(oc) - radius * radius;
     let discriminant = b*b - 4.0 * a * c;
-    discriminant > 0.0
-
+    if discriminant < 0.0 {
+        return -1.0;
+    } else {
+        return (-b - discriminant.sqrt()) / (2.0 * a);
+    }
 }
 
 pub struct Ray {

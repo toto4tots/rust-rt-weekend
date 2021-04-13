@@ -67,5 +67,5 @@ pub fn draw() {
             canvas.set(i, j, pixel_color);
         }
     }
-    canvas.save("redcircle.png");
+    canvas.save("colorsphere.png");
 }

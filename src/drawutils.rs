@@ -30,7 +30,7 @@ impl Canvas {
             let r = (color.x() * 256.0) as u8;
             let g = (color.y() * 256.0) as u8;
             let b = (color.z() * 256.0) as u8;
-            println!("xy = {} {} rgb = {}, {}, {} Color = {:?}", x, y, r, g, b, color);
+            // println!("xy = {} {} rgb = {}, {}, {} Color = {:?}", x, y, r, g, b, color);
             self.image.put_pixel(x, y, Rgb([r, g, b]));
         }
     }
