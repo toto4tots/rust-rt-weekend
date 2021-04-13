@@ -4,7 +4,6 @@ use crate::{
     vec3::Vec3
 };
 
-
 #[test]
 pub fn create_vect() {
     {
@@ -20,7 +19,7 @@ pub fn create_vect() {
 pub fn add_vect() {
     {
         let v1 = Vec3::new(0.5, 0.0, 0.0);
-        let v2 = Vec3::new(1.0, 0.0, 0.0);
+        let v2 = Vec3::new(1, 0, 0);
         let ret = Vec3::new(1.5, 0.0, 0.0);
         assert_eq!(ret, v1 + v2);
     }
@@ -29,6 +28,11 @@ pub fn add_vect() {
         let v2 = Vec3::new(1.0, 0.3, -4.0);
         let ret = Vec3::new(1.5, 2.1, 8.0);
         assert_eq!(ret, v1 + v2);
+    }
+    {
+        let v1 = Vec3::new(0.5, 1.8, 12.0);
+        let ret = Vec3::new(1.5, 2.1, 8.0);
+        assert_eq!(ret, v1 + [1.0, 0.3, -4.0]);
     }
 }
 #[test]
@@ -44,6 +48,13 @@ pub fn sub_vect() {
         let v2 = Vec3::new(1.0, 0.3, -4.0);
         let ret = Vec3::new(-0.5, 1.5, 16.0);
         assert_eq!(ret, v1 - v2);
+    }
+    {
+        let v1 = Vec3::new(0.5, 1.8, 12.0);
+        let v2 = Vec3::new(1.0, 0.3, -4.0);
+        let ret = Vec3::new(-0.5, 1.5, 16.0);
+        assert_eq!(ret, v1 - v2);
+        assert_eq!(ret, v1 - [1.0, 0.3, -4.0]);
     }
 }
 
@@ -95,16 +106,16 @@ pub fn scale() {
     }
 }
 
-
 #[test]
 pub fn multiply() {
     let a = Vec3::new(18.0, 2.0, 3.0);
     let b = Vec3::new(1.0, 12.0, 11.0);
     let ans = Vec3::new(18.0, 24.0, 33.0);
-    let ret = a.multiply(b);
+    let ret0 = a* [1.0, 12.0, 11.0];
+    let ret = a*b;
     assert_eq!(ret, ans);
+    assert_eq!(ret0, ans);
 }
-
 
 #[test]
 pub fn dot_product() {

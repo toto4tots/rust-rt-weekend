@@ -1,24 +1,24 @@
 
 use std:: fmt;
-use std::ops::{Add, Sub};
+use std::ops::{Add, Sub, Mul};
 use std::convert::From;
 
 pub fn close_enough(a: f64, b: f64) -> bool {
     (a - b).abs() < 1e-5
 }
 
-
-
-
 #[derive(Debug, Clone, Copy)]
 pub struct Vec3 {
     e: [f64; 3]
 }
 
+type Color = Vec3;
+type Point = Vec3;
+
 impl Vec3 {
-    pub fn new(x: f64, y: f64, z: f64) -> Self {
+    pub fn new<N: Into<f64>>(x: N, y: N, z: N) -> Self {
         Vec3 {
-            e: [x, y, z]
+            e: [x.into(), y.into(), z.into()]
         }
     }
     pub fn x(&self) -> f64 {
@@ -37,10 +37,6 @@ impl Vec3 {
         Vec3::new(self.e[0] * val, self.e[1] * val, self.e[2] *val)
     }
 
-    pub fn multiply(&self, v: Vec3) -> Vec3 {
-        Vec3::new(self.e[0] * v.e[0], self.e[1] * v.e[1], self.e[2] * v.e[2])
-    }
-    
     pub fn magnitude(&self) -> f64 {
         self.mag_squared().sqrt()
     }
@@ -77,9 +73,10 @@ impl From<[f64; 3]> for Vec3 {
     }
 }
 
-impl Add<Vec3> for Vec3 {
+impl<I: Into<Vec3>> Add<I> for Vec3 {
     type Output = Vec3;
-    fn add(self, other: Vec3) -> Vec3 {
+    fn add(self, i: I) -> Vec3 {
+        let other = i.into();
         Vec3::new(
             self.e[0] + other.e[0], 
             self.e[1] + other.e[1], 
@@ -88,13 +85,26 @@ impl Add<Vec3> for Vec3 {
     }
 }
 
-impl Sub<Vec3> for Vec3 {
+impl<I: Into<Vec3>> Sub<I> for Vec3 {
     type Output = Vec3;
-    fn sub(self, other: Vec3) -> Vec3 {
+    fn sub(self, i: I) -> Vec3 {
+        let other = i.into();
         Vec3::new(
             self.e[0] - other.e[0], 
             self.e[1] - other.e[1], 
             self.e[2] - other.e[2]
+        )
+    }
+}
+
+impl<I: Into<Vec3>> Mul<I> for Vec3 {
+    type Output = Vec3;
+    fn mul(self, i: I) -> Vec3 {
+        let other = i.into();
+        Vec3::new(
+            self.e[0] * other.e[0],
+            self.e[1] * other.e[1],
+            self.e[2] * other.e[2]
         )
     }
 }
@@ -115,7 +125,3 @@ impl fmt::Display for Vec3 {
         write!(f, "{:?}", self.e)
     }
 }
-
-
-
-
