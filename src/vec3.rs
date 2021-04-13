@@ -1,6 +1,6 @@
 
 use std:: fmt;
-use std::ops::{Add, Sub};
+use std::ops::{Add, Sub, Mul};
 use std::convert::From;
 
 pub fn close_enough(a: f64, b: f64) -> bool {
@@ -37,10 +37,6 @@ impl Vec3 {
         Vec3::new(self.e[0] * val, self.e[1] * val, self.e[2] *val)
     }
 
-    pub fn multiply(&self, v: Vec3) -> Vec3 {
-        Vec3::new(self.e[0] * v.e[0], self.e[1] * v.e[1], self.e[2] * v.e[2])
-    }
-    
     pub fn magnitude(&self) -> f64 {
         self.mag_squared().sqrt()
     }
@@ -100,6 +96,17 @@ impl Sub<Vec3> for Vec3 {
     }
 }
 
+impl Mul<Vec3> for Vec3 {
+    type Output = Vec3;
+    fn mul(self, other: Vec3) -> Vec3 {
+        Vec3::new(
+            self.e[0] * other.e[0],
+            self.e[1] * other.e[1],
+            self.e[2] * other.e[2]
+        )
+    }
+}
+
 impl PartialEq for Vec3 {
     fn eq(&self, other: &Self) -> bool {
         for i in 0..self.e.len() {
@@ -116,7 +123,3 @@ impl fmt::Display for Vec3 {
         write!(f, "{:?}", self.e)
     }
 }
-
-
-
-

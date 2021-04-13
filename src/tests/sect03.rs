@@ -4,7 +4,6 @@ use crate::{
     vec3::Vec3
 };
 
-
 #[test]
 pub fn create_vect() {
     {
@@ -100,16 +99,14 @@ pub fn scale() {
     }
 }
 
-
 #[test]
 pub fn multiply() {
     let a = Vec3::new(18.0, 2.0, 3.0);
     let b = Vec3::new(1.0, 12.0, 11.0);
     let ans = Vec3::new(18.0, 24.0, 33.0);
-    let ret = a.multiply(b);
+    let ret = a*b;
     assert_eq!(ret, ans);
 }
-
 
 #[test]
 pub fn dot_product() {
