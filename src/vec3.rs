@@ -7,18 +7,18 @@ pub fn close_enough(a: f64, b: f64) -> bool {
     (a - b).abs() < 1e-5
 }
 
-
-
-
 #[derive(Debug, Clone, Copy)]
 pub struct Vec3 {
     e: [f64; 3]
 }
 
+type Color = Vec3;
+type Point = Vec3;
+
 impl Vec3 {
-    pub fn new(x: f64, y: f64, z: f64) -> Self {
+    pub fn new<N: Into<f64>>(x: N, y: N, z: N) -> Self {
         Vec3 {
-            e: [x, y, z]
+            e: [x.into(), y.into(), z.into()]
         }
     }
     pub fn x(&self) -> f64 {
@@ -77,9 +77,10 @@ impl From<[f64; 3]> for Vec3 {
     }
 }
 
-impl Add<Vec3> for Vec3 {
+impl<I: Into<Vec3>> Add<I> for Vec3 {
     type Output = Vec3;
-    fn add(self, other: Vec3) -> Vec3 {
+    fn add(self, i: I) -> Vec3 {
+        let other = i.into();
         Vec3::new(
             self.e[0] + other.e[0], 
             self.e[1] + other.e[1], 

@@ -20,7 +20,7 @@ pub fn create_vect() {
 pub fn add_vect() {
     {
         let v1 = Vec3::new(0.5, 0.0, 0.0);
-        let v2 = Vec3::new(1.0, 0.0, 0.0);
+        let v2 = Vec3::new(1, 0, 0);
         let ret = Vec3::new(1.5, 0.0, 0.0);
         assert_eq!(ret, v1 + v2);
     }
@@ -29,6 +29,11 @@ pub fn add_vect() {
         let v2 = Vec3::new(1.0, 0.3, -4.0);
         let ret = Vec3::new(1.5, 2.1, 8.0);
         assert_eq!(ret, v1 + v2);
+    }
+    {
+        let v1 = Vec3::new(0.5, 1.8, 12.0);
+        let ret = Vec3::new(1.5, 2.1, 8.0);
+        assert_eq!(ret, v1 + [1.0, 0.3, -4.0]);
     }
 }
 #[test]
