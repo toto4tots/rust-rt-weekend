@@ -12,8 +12,8 @@ pub struct Vec3 {
     e: [f64; 3]
 }
 
-type Color = Vec3;
-type Point = Vec3;
+pub type Color = Vec3;
+pub type Point = Vec3;
 
 impl Vec3 {
     pub fn new<N: Into<f64>>(x: N, y: N, z: N) -> Self {
@@ -61,6 +61,10 @@ impl Vec3 {
             self.e[2] * v.e[0] - self.e[0] * v.e[2],
             self.e[0] * v.e[1] - self.e[1] * v.e[0]
         )
+    }
+
+    pub fn unit_vector(&self) -> Vec3 {
+        self.scale(1.0 / self.magnitude())
     }
     
 }

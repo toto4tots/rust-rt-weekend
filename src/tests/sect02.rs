@@ -24,9 +24,7 @@ pub fn draw() {
             let ug = (255.999 * g) as u8;
             let ub = (255.999 * b) as u8;
 
-            if image_height - j < image_height && i < image_width {
-                canvas.set(i, image_height - j, vec![r, g, b]);
-            }
+            canvas.set(i, j, [r, g, b]);
         }
     }
     canvas.save("image2.png");
