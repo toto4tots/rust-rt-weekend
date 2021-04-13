@@ -6,7 +6,7 @@ use crate::{
     vec3::Vec3,
 };
 
-pub fn ray_color(r: &Ray) -> vec3::Vec3 {
+pub fn ray_color(r: Ray) -> vec3::Vec3 {
     let t = hit_sphere(Point::new(0, 0, -1), 0.5, r);
     if t > 0.0 {
         let n = (r.at(t) - Vec3::new(0, 0, -1)).unit_vector();
@@ -17,7 +17,7 @@ pub fn ray_color(r: &Ray) -> vec3::Vec3 {
     Color::new(1, 1, 1).scale(1.0 - t) + Color::new(0.5, 0.7, 1.0).scale(t)
 }
 
-pub fn hit_sphere(center: Point, radius: f64, r: &Ray) -> f64 {
+pub fn hit_sphere(center: Point, radius: f64, r: Ray) -> f64 {
     let oc = r.origin - center;
     let a = r.direction.dot(r.direction);
     let b = 2.0 * oc.dot(r.direction);
@@ -30,6 +30,7 @@ pub fn hit_sphere(center: Point, radius: f64, r: &Ray) -> f64 {
     }
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct Ray {
     pub origin: Point,
     pub direction: Vec3

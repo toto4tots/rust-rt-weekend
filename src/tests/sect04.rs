@@ -63,7 +63,7 @@ pub fn draw() {
                             horizontal.scale(u) + 
                             vertical.scale(v) - 
                             origin);
-            let pixel_color = ray_color(&r);
+            let pixel_color = ray_color(r);
             canvas.set(i, j, pixel_color);
         }
     }
