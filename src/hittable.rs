@@ -6,14 +6,14 @@ use crate::{
 };
 
 #[derive(Debug, Clone, Copy)]
-pub struct Hit_Record {
+pub struct HitRecord {
     pub p: Point,
     pub normal: Vec3,
     pub t: f64
 }
 
 pub trait Hittable {
-    fn hit(&self, r: Ray, t_min: f64, t_max: f64, rec: Hit_Record) -> bool;
+    fn hit(&self, r: Ray, t_min: f64, t_max: f64, rec: HitRecord) -> bool;
 }
 
 pub struct Sphere {
@@ -37,7 +37,7 @@ impl Sphere {
 }
 
 impl Hittable for Sphere {
-    fn hit(&self, r: Ray, t_min: f64, t_max: f64, mut rec: Hit_Record) -> bool {
+    fn hit(&self, r: Ray, t_min: f64, t_max: f64, mut rec: HitRecord) -> bool {
         let oc = r.origin - self.center;
         let a = r.direction.mag_squared(); // dot product on itself
         let half_b = oc.dot(r.direction);
