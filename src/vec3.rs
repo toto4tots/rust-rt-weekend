@@ -41,7 +41,7 @@ impl Vec3 {
         self.mag_squared().sqrt()
     }
 
-    fn mag_squared(&self) -> f64 {
+    pub fn mag_squared(&self) -> f64 {
         self.e[0] * self.e[0] + self.e[1] * self.e[1] + self.e[2] * self.e[2]
     }
 
