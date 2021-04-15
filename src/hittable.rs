@@ -5,20 +5,31 @@ use crate::{
     ray::Ray,
 };
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Default)]
 pub struct HitRecord {
     pub p: Point,
     pub normal: Vec3,
-    pub t: f64
+    pub t: f64,
+    pub front_face: bool
+}
+
+impl HitRecord {
+    pub fn new() -> Self { Default::default() }
+    
+    pub fn set_face_normal(&mut self, r: Ray, outward_normal: Vec3) {
+        self.front_face = r.direction.dot(outward_normal) < 0.0;
+        self.normal = if self.front_face {outward_normal} else {outward_normal.scale(-1.0)};
+    }
 }
 
 pub trait Hittable {
-    fn hit(&self, r: Ray, t_min: f64, t_max: f64, rec: HitRecord) -> bool;
+    fn hit(&self, r: Ray, t_min: f64, t_max: f64, rec: &mut HitRecord) -> bool;
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct Sphere {
-    center: Point,
-    radius: f64
+    pub center: Point,
+    pub radius: f64
 }
 
 impl Sphere {
@@ -28,16 +39,10 @@ impl Sphere {
             radius: 1.0
         }
     }
-    // pub fn new(cen: Point, r: f64) -> Self {
-    //     Sphere {
-    //         center: Point::new(0, 0, 0),
-    //         radius: 1.0
-    //     }
-    // }
 }
 
 impl Hittable for Sphere {
-    fn hit(&self, r: Ray, t_min: f64, t_max: f64, mut rec: HitRecord) -> bool {
+    fn hit(&self, r: Ray, t_min: f64, t_max: f64, rec: &mut HitRecord) -> bool {
         let oc = r.origin - self.center;
         let a = r.direction.mag_squared(); // dot product on itself
         let half_b = oc.dot(r.direction);
@@ -61,10 +66,9 @@ impl Hittable for Sphere {
 
         rec.t = root;
         rec.p = r.at(rec.t);
-        rec.normal = (rec.p - self.center).scale(1.0 / self.radius);
+        let outward_normal = (rec.p - self.center).scale(1.0 / self.radius);
+        rec.set_face_normal(r, outward_normal);
 
         true
     }
 }
-
-
