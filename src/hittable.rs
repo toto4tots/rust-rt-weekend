@@ -5,7 +5,7 @@ use crate::{
     ray::Ray,
 };
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Default)]
 pub struct HitRecord {
     pub p: Point,
     pub normal: Vec3,
@@ -14,14 +14,7 @@ pub struct HitRecord {
 }
 
 impl HitRecord {
-    pub fn new() -> Self {
-        HitRecord {
-            // dummy values
-            p: Point::new(0, 0, 0),
-            normal: Vec3::new(0, 0, 0),
-            t: 0.0, front_face: false
-        }
-    }
+    pub fn new() -> Self { Default::default() }
     
     pub fn set_face_normal(&mut self, r: Ray, outward_normal: Vec3) {
         self.front_face = r.direction.dot(outward_normal) < 0.0;

@@ -11,9 +11,7 @@ pub struct HittableList {
 
 impl HittableList {
     pub fn new (objects: Vec<Box<dyn Hittable>>) -> Self {
-        HittableList {
-            objects: objects
-        }
+        HittableList { objects }
     }
 
     pub fn add(&mut self, obj: Box<dyn Hittable>) {

@@ -7,7 +7,7 @@ pub fn close_enough(a: f64, b: f64) -> bool {
     (a - b).abs() < 1e-5
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Default)]
 pub struct Vec3 {
     e: [f64; 3]
 }
