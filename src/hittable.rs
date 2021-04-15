@@ -16,10 +16,10 @@ pub struct HitRecord {
 impl HitRecord {
     pub fn new() -> Self {
         HitRecord {
-            // default values 
+            // dummy values
             p: Point::new(0, 0, 0),
-             normal: Vec3::new(0, 0, 0),
-             t: 0.0, front_face: false
+            normal: Vec3::new(0, 0, 0),
+            t: 0.0, front_face: false
         }
     }
     
@@ -30,13 +30,13 @@ impl HitRecord {
 }
 
 pub trait Hittable {
-    // fn construct(s: Sphere) -> Box<Self>;
     fn hit(&self, r: Ray, t_min: f64, t_max: f64, rec: &mut HitRecord) -> bool;
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct Sphere {
-    center: Point,
-    radius: f64
+    pub center: Point,
+    pub radius: f64
 }
 
 impl Sphere {
@@ -46,12 +46,6 @@ impl Sphere {
             radius: 1.0
         }
     }
-    // pub fn new(cen: Point, r: f64) -> Self {
-    //     Sphere {
-    //         center: Point::new(0, 0, 0),
-    //         radius: 1.0
-    //     }
-    // }
 }
 
 impl Hittable for Sphere {
@@ -85,5 +79,3 @@ impl Hittable for Sphere {
         true
     }
 }
-
-

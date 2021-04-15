@@ -4,8 +4,6 @@ use crate::{
     ray::Ray,
 };
 
-use std::fmt;
-
 // #[derive(Debug)]
 pub struct HittableList {
     objects: Vec<Box<dyn Hittable>>
@@ -22,17 +20,6 @@ impl HittableList {
         self.objects.push(obj);
     }
 }
-
-// impl fmt::Display for HittableList {
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         write!(f, "[");
-//         for obj in &self.objects {
-//             write!(f, "{:?}", obj);
-//         }
-//         write!(f, "]")
-//     }
-
-// }
 
 impl Hittable for HittableList {
     fn hit(&self, r: Ray, t_min: f64, t_max: f64, rec: &mut HitRecord) -> bool {
