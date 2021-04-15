@@ -14,6 +14,15 @@ pub struct HitRecord {
 }
 
 impl HitRecord {
+    pub fn new() -> Self {
+        HitRecord {
+            // default values 
+            p: Point::new(0, 0, 0),
+             normal: Vec3::new(0, 0, 0),
+             t: 0.0, front_face: false
+        }
+    }
+    
     pub fn set_face_normal(&mut self, r: Ray, outward_normal: Vec3) {
         self.front_face = r.direction.dot(outward_normal) < 0.0;
         self.normal = if self.front_face {outward_normal} else {outward_normal.scale(-1.0)};
@@ -21,7 +30,8 @@ impl HitRecord {
 }
 
 pub trait Hittable {
-    fn hit(&self, r: Ray, t_min: f64, t_max: f64, rec: HitRecord) -> bool;
+    // fn construct(s: Sphere) -> Box<Self>;
+    fn hit(&self, r: Ray, t_min: f64, t_max: f64, rec: &mut HitRecord) -> bool;
 }
 
 pub struct Sphere {
@@ -45,7 +55,7 @@ impl Sphere {
 }
 
 impl Hittable for Sphere {
-    fn hit(&self, r: Ray, t_min: f64, t_max: f64, mut rec: HitRecord) -> bool {
+    fn hit(&self, r: Ray, t_min: f64, t_max: f64, rec: &mut HitRecord) -> bool {
         let oc = r.origin - self.center;
         let a = r.direction.mag_squared(); // dot product on itself
         let half_b = oc.dot(r.direction);
