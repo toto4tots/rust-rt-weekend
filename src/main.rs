@@ -4,12 +4,15 @@ mod tests {
     pub mod sect03;
     pub mod sect04;
     pub mod sect06;
+    pub mod sect07;
 }
 pub mod vec3;
 pub mod drawutils;
 pub mod ray;
 pub mod hittable;
 pub mod hittable_list;
+pub mod rtweekend;
+pub mod camera;
 
 fn main() {
     println!("Hello, world!");

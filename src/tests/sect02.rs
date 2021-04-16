@@ -12,6 +12,7 @@ pub fn draw() {
     let fimage_height = 256f64;
     let mut img = RgbImage::new(image_width, image_height);
     let mut canvas = drawutils::Canvas::new(image_width, image_height);
+    let samples_per_pixel = 1.0;
 
     for j in (0..image_height).rev() {
         // println!("Scanlines remaining: {}", j);
@@ -24,7 +25,7 @@ pub fn draw() {
             let ug = (255.999 * g) as u8;
             let ub = (255.999 * b) as u8;
 
-            canvas.set(i, j, [r, g, b]);
+            canvas.set(i, j, [r, g, b], samples_per_pixel);
         }
     }
     canvas.save("image2.png");

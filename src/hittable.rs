@@ -33,9 +33,18 @@ pub struct Sphere {
 }
 
 impl Sphere {
-    pub fn new() -> Self {
+    pub fn new(center: Point, radius: f64) -> Self {
         Sphere {
-            center: Point::new(0, 0, 0),
+            center,
+            radius
+        }
+    }
+}
+
+impl Default for Sphere {
+    fn default() -> Self {
+        Sphere {
+            center: Point::new(0, 0, 0), 
             radius: 1.0
         }
     }

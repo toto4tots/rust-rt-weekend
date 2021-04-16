@@ -40,6 +40,9 @@ pub fn draw1() {
     let fimage_width = 400f64;
     let fimage_height = fimage_width / aspect_ratio;
     let image_height = fimage_height as u32;
+    let samples_per_pixel = 1.0;
+
+
 
     let mut canvas = Canvas::new(image_width, image_height);
 
@@ -72,11 +75,12 @@ pub fn draw1() {
                             vertical.scale(v) - 
                             origin);
             let pixel_color = ray_color(r, &world);
-            canvas.set(i, j, pixel_color);
+            canvas.set(i, j, pixel_color, samples_per_pixel);
         }
     }
     canvas.save("bluewhite.png");
 }
+
 #[test]
 pub fn draw2() {
     // Draw a multi colored sphere
@@ -86,15 +90,16 @@ pub fn draw2() {
     let fimage_width = 400f64;
     let fimage_height = fimage_width / aspect_ratio;
     let image_height = fimage_height as u32;
+    let samples_per_pixel = 1.0;
 
     let mut canvas = Canvas::new(image_width, image_height);
 
     // World
-    let mut s1 = Sphere::new();
-    s1.center = Point::new(0, 0, -1);
-    s1.radius = 0.5;
+    let mut s1 = Sphere::new(Point::new(0, 0, -1), 0.5);
     let world = HittableList::new(
-        vec![Box::new(s1)]
+        vec![
+            Box::new(s1), 
+        ]
     );
 
     // Camera
@@ -121,7 +126,7 @@ pub fn draw2() {
                             vertical.scale(v) - 
                             origin);
             let pixel_color = ray_color(r, &world);
-            canvas.set(i, j, pixel_color);
+            canvas.set(i, j, pixel_color, samples_per_pixel);
         }
     }
     canvas.save("coloredsphere.png");
