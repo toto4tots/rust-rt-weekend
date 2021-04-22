@@ -10,10 +10,15 @@ use crate::{
 
 use std::f64::INFINITY;
 
-pub fn ray_color(r: Ray, world: &dyn Hittable) -> vec3::Vec3 {
+pub fn ray_color(r: Ray, world: &dyn Hittable, depth: i64) -> vec3::Vec3 {
     let mut rec = HitRecord::new();
-    if world.hit(r, 0.0, INFINITY, &mut rec) {
-        return (rec.normal + Color::new(1, 1, 1)).scale(0.5);
+    if depth <= 0 {
+        return Color::new(0, 0, 0);
+    }
+    if world.hit(r, 0.001, INFINITY, &mut rec) {
+        let target = rec.p + rec.normal + vec3::random_unit_vector();
+        // let target = rec.p + vec3::random_in_hemisphere(rec.normal);
+        return ray_color(Ray::new(rec.p, target - rec.p), world, depth - 1).scale(0.5);
     }
     let unit_direction = r.direction.unit_vector();
     let t = 0.5 * (unit_direction.y() + 1.0);
