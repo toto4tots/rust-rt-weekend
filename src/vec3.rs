@@ -1,10 +1,43 @@
 
+use crate::rtweekend::random_float_with_range;
+use crate::rtweekend::random_float;
 use std:: fmt;
 use std::ops::{Add, Sub, Mul};
 use std::convert::From;
 
 pub fn close_enough(a: f64, b: f64) -> bool {
     (a - b).abs() < 1e-5
+}
+
+pub fn random() -> Vec3 {
+    Vec3::new(random_float(), random_float(), random_float())
+}
+
+pub fn random_with_range(min: f64, max: f64) -> Vec3 {
+    Vec3::new(random_float_with_range(min, max), random_float_with_range(min, max), random_float_with_range(min, max))
+}
+
+pub fn random_in_unit_sphere() -> Vec3 {
+    loop {
+        let p = random_with_range(-1.0, 1.0);
+        if p.mag_squared() >= 1.0 {
+            continue
+        }
+        return p;
+    }
+}
+
+pub fn random_unit_vector() -> Vec3 {
+    random_in_unit_sphere().unit_vector()
+}
+
+pub fn random_in_hemisphere(normal: Vec3) -> Vec3 {
+    let in_unit_sphere = random_in_unit_sphere();
+    if in_unit_sphere.dot(normal) > 0.0 {
+        in_unit_sphere
+    } else {
+        in_unit_sphere.scale(-1.0)
+    }
 }
 
 #[derive(Debug, Clone, Copy, Default)]
