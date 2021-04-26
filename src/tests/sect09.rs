@@ -102,8 +102,8 @@ pub fn fuzzy() {
     // World
     let material_ground = Material::Lambertian(Color::new(0.8, 0.8, 0.0));
     let material_center = Material::Lambertian(Color::new(0.7, 0.3, 0.3));
-    let material_left = Material::Metal(Color::new(0.8, 0.8, 0.8), 0.3);
-    let material_right = Material::Metal(Color::new(0.8, 0.6, 0.2), 1.0);
+    let material_left = Material::metal(Color::new(0.8, 0.8, 0.8), 0.3);
+    let material_right = Material::metal(Color::new(0.8, 0.6, 0.2), 1.0);
 
     let s1 = Sphere::new(
         Point::new(0.0, -100.5, -1.0),

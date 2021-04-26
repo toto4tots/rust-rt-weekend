@@ -11,6 +11,10 @@ pub enum Material {
 }
 
 impl Material {
+    pub fn metal(color: Color, fuzz: f64) -> Self {
+        Self::Metal(color, if fuzz < 1.0 {fuzz} else {1.0})
+    }
+
     pub fn scatter(
     &self,
     r_in: Ray,
@@ -31,9 +35,9 @@ impl Material {
                 return true;
             },
             Material::Metal(albedo, f) => {
-                let fuzz = if *f < 1.0 {*f} else {1.0};
+                // let fuzz = if *f < 1.0 {*f} else {1.0};
                 let reflected = r_in.direction.unit_vector().reflect(rec.normal);
-                *scattered = Ray::new(rec.p, reflected + random_unit_vector().scale(fuzz));
+                *scattered = Ray::new(rec.p, reflected + random_unit_vector().scale(*f));
                 *attenuation = *albedo;
                 scattered.direction.dot(rec.normal) > 0.0
             }
