@@ -35,5 +35,3 @@ impl Hittable for HittableList {
         hit_anything
     }
 }
-
-

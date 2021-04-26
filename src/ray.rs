@@ -16,16 +16,19 @@ pub fn ray_color(r: Ray, world: &dyn Hittable, depth: i64) -> vec3::Vec3 {
         return Color::new(0, 0, 0);
     }
     if world.hit(r, 0.001, INFINITY, &mut rec) {
-        let target = rec.p + rec.normal + vec3::random_unit_vector();
-        // let target = rec.p + vec3::random_in_hemisphere(rec.normal);
-        return ray_color(Ray::new(rec.p, target - rec.p), world, depth - 1).scale(0.5);
+        let mut scattered: Ray = Default::default();
+        let mut attenuation: Color = Default::default();
+        if rec.material.scatter(r, &rec, &mut attenuation, &mut scattered) {
+            return attenuation * ray_color(scattered, world, depth - 1);
+        }
+        return Color::new(0, 0, 0);
     }
     let unit_direction = r.direction.unit_vector();
     let t = 0.5 * (unit_direction.y() + 1.0);
     Color::new(1, 1, 1).scale(1.0 - t) + Color::new(0.5, 0.7, 1.0).scale(t)
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Default, Debug, Clone, Copy)]
 pub struct Ray {
     pub origin: Point,
     pub direction: Vec3

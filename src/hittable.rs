@@ -1,4 +1,7 @@
 
+use crate::vec3::Color;
+use std::rc::Rc;
+use crate::material::Material;
 use crate::{
     vec3::Vec3,
     vec3::Point,
@@ -9,6 +12,7 @@ use crate::{
 pub struct HitRecord {
     pub p: Point,
     pub normal: Vec3,
+    pub material: Material,
     pub t: f64,
     pub front_face: bool
 }
@@ -29,14 +33,16 @@ pub trait Hittable {
 #[derive(Debug, Clone, Copy)]
 pub struct Sphere {
     pub center: Point,
-    pub radius: f64
+    pub radius: f64,
+    pub material: Material
 }
 
 impl Sphere {
-    pub fn new(center: Point, radius: f64) -> Self {
+    pub fn new(center: Point, radius: f64, material: Material) -> Self {
         Sphere {
             center,
-            radius
+            radius,
+            material,
         }
     }
 }
@@ -45,7 +51,8 @@ impl Default for Sphere {
     fn default() -> Self {
         Sphere {
             center: Point::new(0, 0, 0), 
-            radius: 1.0
+            radius: 1.0,
+            material: Material::Lambertian(Color::new(0, 0, 0)),
         }
     }
 }
@@ -77,6 +84,7 @@ impl Hittable for Sphere {
         rec.p = r.at(rec.t);
         let outward_normal = (rec.p - self.center).scale(1.0 / self.radius);
         rec.set_face_normal(r, outward_normal);
+        rec.material = self.material;
 
         true
     }

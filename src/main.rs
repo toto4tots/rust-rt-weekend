@@ -6,6 +6,7 @@ mod tests {
     pub mod sect06;
     pub mod sect07;
     pub mod sect08;
+    pub mod sect09;
 }
 pub mod vec3;
 pub mod drawutils;
@@ -14,6 +15,7 @@ pub mod hittable;
 pub mod hittable_list;
 pub mod rtweekend;
 pub mod camera;
+pub mod material;
 
 fn main() {
     println!("Hello, world!");
