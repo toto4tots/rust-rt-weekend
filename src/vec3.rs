@@ -100,6 +100,14 @@ impl Vec3 {
         self.scale(1.0 / self.magnitude())
     }
     
+    pub fn near_zero(&self) -> bool {
+        let s = 1e-8;
+       (self.e[0].abs() < s) &&(self.e[1].abs() < s) &&(self.e[2].abs() < s)
+    }
+
+    pub fn reflect(&self, n: Vec3) -> Vec3 {
+        *self - n.scale(self.dot(n) * 2.0)
+    }
 }
 
 impl From<[f64; 3]> for Vec3 {
