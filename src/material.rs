@@ -3,6 +3,8 @@ use crate::vec3::Color;
 use crate::hittable::HitRecord;
 use crate::ray::Ray;
 use crate::vec3::random_unit_vector;
+use crate::vec3::Vec3;
+use crate::rtweekend::random_float;
 
 #[derive(Debug, Clone, Copy)]
 pub enum Material {
@@ -36,7 +38,6 @@ impl Material {
                 return true;
             },
             Material::Metal(albedo, f) => {
-                // let fuzz = if *f < 1.0 {*f} else {1.0};
                 let reflected = r_in.direction.unit_vector().reflect(rec.normal);
                 *scattered = Ray::new(rec.p, reflected + random_unit_vector().scale(*f));
                 *attenuation = *albedo;
@@ -46,11 +47,27 @@ impl Material {
                 *attenuation = Color::new(1, 1, 1);
                 let refraction_ratio = if rec.front_face {1.0 / ir} else {*ir};
                 let unit_direction = r_in.direction.unit_vector();
-                let refracted = unit_direction.refract(rec.normal, refraction_ratio);
-                *scattered = Ray::new(rec.p, refracted);
+                let cos_theta = (unit_direction).scale(-1.0).dot(rec.normal).min(1.0);
+                let sine_theta = (1.0 - cos_theta * cos_theta).sqrt();
+
+                let cannot_refract = refraction_ratio * sine_theta > 1.0;
+                let mut direction: Vec3 = Default::default();
+
+                if cannot_refract || Self::reflectance(cos_theta, refraction_ratio) > random_float() {
+                    direction = unit_direction.reflect(rec.normal);
+                } else {
+                    direction = unit_direction.refract(rec.normal, refraction_ratio);
+                }
+                *scattered = Ray::new(rec.p, direction);
                 true
             }
         }
+    }
+
+    fn reflectance(cosine: f64, ref_idx: f64) -> f64 {
+        let mut r0 = (1.0 - ref_idx) / (1.0 + ref_idx);
+        r0 = r0 * r0;
+        r0 + (1.0 - r0) * f64::powf(1.0 - cosine, 5.0)
     }
 }
 
