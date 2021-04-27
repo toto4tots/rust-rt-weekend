@@ -8,6 +8,7 @@ use crate::vec3::random_unit_vector;
 pub enum Material {
     Lambertian(Color),
     Metal(Color, f64),
+    Dielectric(f64),
 }
 
 impl Material {
@@ -41,10 +42,16 @@ impl Material {
                 *attenuation = *albedo;
                 scattered.direction.dot(rec.normal) > 0.0
             }
+            Material::Dielectric(ir) => {
+                *attenuation = Color::new(1, 1, 1);
+                let refraction_ratio = if rec.front_face {1.0 / ir} else {*ir};
+                let unit_direction = r_in.direction.unit_vector();
+                let refracted = unit_direction.refract(rec.normal, refraction_ratio);
+                *scattered = Ray::new(rec.p, refracted);
+                true
+            }
         }
     }
-
-
 }
 
 impl Default for Material {

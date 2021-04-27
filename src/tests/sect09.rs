@@ -28,7 +28,6 @@ pub fn draw() {
     let max_depth = 50;
 
     let mut canvas = Canvas::new(image_width, image_height);
-//  material: Material::Lambertian(Color::new(0, 0, 0)),
     // World
     let material_ground = Material::Lambertian(Color::new(0.8, 0.8, 0.0));
     let material_center = Material::Lambertian(Color::new(0.7, 0.3, 0.3));
