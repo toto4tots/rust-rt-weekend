@@ -8,6 +8,7 @@ mod tests {
     pub mod sect08;
     pub mod sect09;
     pub mod sect10;
+    pub mod sect11;
 }
 pub mod vec3;
 pub mod drawutils;

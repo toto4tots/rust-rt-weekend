@@ -15,6 +15,7 @@ use crate::{
     material,
     material::Material
 };
+use std::f64::consts::PI;
 
 #[test]
 pub fn draw() {
@@ -30,29 +31,21 @@ pub fn draw() {
     let mut canvas = Canvas::new(image_width, image_height);
 
     // World
-    let material_ground = Material::Lambertian(Color::new(0.8, 0.8, 0.0));
-    let material_center = Material::Dielectric(1.5);
-    let material_left = Material::Dielectric(1.5);
-    let material_right = Material::Metal(Color::new(0.8, 0.6, 0.2), 1.0);
+    let r = (PI / 4.0).cos();
+
+
+    let material_left = Material::Lambertian(Color::new(0, 0, 1));
+    let material_right = Material::Lambertian(Color::new(1, 0, 0));
+
 
     let s1 = Sphere::new(
-        Point::new(0.0, -100.5, -1.0),
-        100.0,
-        material_ground
-    );
-    let s2 = Sphere::new(
-        Point::new(0.0, 0.0, -1.0),
-        0.5,
-        material_center
-    );
-    let s3 = Sphere::new(
-        Point::new(-1.0, 0.0, -1.0),
-        0.5,
+        Point::new(-r, 0.0, -1.0),
+        r,
         material_left
     );
-    let s4 = Sphere::new(
-        Point::new(1.0, 0.0, -1.0),
-        0.5,
+    let s2 = Sphere::new(
+        Point::new(r, 0.0, -1.0),
+        r,
         material_right
     );
 
@@ -60,13 +53,17 @@ pub fn draw() {
         vec![
             Box::new(s1), 
             Box::new(s2),
-            Box::new(s3),
-            Box::new(s4),
         ]
     );    
 
     // Camera
-    let cam: Camera = Default::default();
+    let cam = Camera::new(
+        Point::new(0, 0, 0),
+        Point::new(0, 0, -1),
+        Vec3::new(0, 1, 1),
+        90.0,
+        aspect_ratio
+    );
 
     // Render 
     for j in (0..image_height).rev() {
@@ -83,11 +80,11 @@ pub fn draw() {
 
         }
     }
-    canvas.save("refraction.png");
+    canvas.save("camera.png");
 }
 
 #[test]
-pub fn draw2() {
+pub fn zoomed() {
     // Image 
     let aspect_ratio = 16.0 / 9.0;
     let image_width = 400;
@@ -135,7 +132,14 @@ pub fn draw2() {
         ]
     );
 
-    let cam: Camera = Default::default();
+    // Camera
+    let cam = Camera::new(
+        Point::new(-2, 2, 1),
+        Point::new(0, 0, -1),
+        Vec3::new(0, 1, 0),
+        20.0,
+        aspect_ratio
+    );
 
     // Render 
     for j in (0..image_height).rev() {
@@ -152,12 +156,11 @@ pub fn draw2() {
 
         }
     }
-    canvas.save("refraction2.png");
+    canvas.save("zoomed.png");
 }
 
-
 #[test]
-pub fn draw3() {
+pub fn distant() {
     // Image 
     let aspect_ratio = 16.0 / 9.0;
     let image_width = 400;
@@ -195,11 +198,6 @@ pub fn draw3() {
         0.5,
         material_right
     );
-    let s5 = Sphere::new(
-        Point::new(-1.0, 0.0, -1.0),
-        -0.4,
-        material_left
-    );
 
     let world = HittableList::new(
         vec![
@@ -207,12 +205,17 @@ pub fn draw3() {
             Box::new(s2),
             Box::new(s3),
             Box::new(s4),
-            Box::new(s5),
         ]
-    );    
+    );
 
     // Camera
-    let cam: Camera = Default::default();
+    let cam = Camera::new(
+        Point::new(-2, 2, 1),
+        Point::new(0, 0, -1),
+        Vec3::new(0, 1, 0),
+        90.0,
+        aspect_ratio
+    );
 
     // Render 
     for j in (0..image_height).rev() {
@@ -229,5 +232,5 @@ pub fn draw3() {
 
         }
     }
-    canvas.save("hollow.png");
+    canvas.save("distant.png");
 }
