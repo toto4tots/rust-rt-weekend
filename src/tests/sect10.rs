@@ -66,13 +66,7 @@ pub fn draw() {
     );    
 
     // Camera
-    let cam = Camera::new(
-        Point::new(0, 0, 0),
-        Point::new(0, 0, -1),
-        Vec3::new(0, 1, 0),
-        90.0,
-        aspect_ratio
-    );
+    let cam: Camera = Default::default();
 
     // Render 
     for j in (0..image_height).rev() {
@@ -141,13 +135,7 @@ pub fn draw2() {
         ]
     );
 
-    let cam = Camera::new(
-        Point::new(0, 0, 0),
-        Point::new(0, 0, -1),
-        Vec3::new(0, 1, 0),
-        90.0,
-        aspect_ratio
-    );
+    let cam: Camera = Default::default();
 
     // Render 
     for j in (0..image_height).rev() {
@@ -224,13 +212,7 @@ pub fn draw3() {
     );    
 
     // Camera
-    let cam = Camera::new(
-        Point::new(0, 0, 0),
-        Point::new(0, 0, -1),
-        Vec3::new(0, 1, 0),
-        90.0,
-        aspect_ratio
-    );
+    let cam: Camera = Default::default();
 
     // Render 
     for j in (0..image_height).rev() {

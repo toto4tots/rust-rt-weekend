@@ -46,3 +46,14 @@ impl Camera {
         )
     }
 }
+
+impl Default for Camera {
+    fn default() -> Self {
+        let lookfrom = Point::new(0, 0, 0);
+        let lookat = Point::new(0, 0, -1);
+        let vup = Vec3::new(0, 1, 0);
+        let vfov = 90.0;
+        let aspect_ratio = 16.0 / 9.0;
+        Camera::new(lookfrom, lookat, vup, vfov, aspect_ratio)
+    }
+}
