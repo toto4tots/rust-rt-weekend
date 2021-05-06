@@ -8,38 +8,38 @@ use crate::{
     material::Material,
 };
 
-pub enum EHittable {
+pub enum Hittable {
     Sphere(Sphere),
     HittableList(HittableList),
 }
 
-impl From<Sphere> for EHittable {
-    fn from(sphere: Sphere) -> EHittable {
-        EHittable::Sphere(sphere) 
+impl From<Sphere> for Hittable {
+    fn from(sphere: Sphere) -> Hittable {
+        Hittable::Sphere(sphere) 
     }
 }
 
-impl From<HittableList> for EHittable {
-    fn from(hl: HittableList) -> EHittable {
-        EHittable::HittableList(hl) 
+impl From<HittableList> for Hittable {
+    fn from(hl: HittableList) -> Hittable {
+        Hittable::HittableList(hl) 
     }
 }
 
-impl EHittable {
+impl Hittable {
     pub fn hit(&self, r: Ray, t_min: f64, t_max: f64, rec: &mut HitRecord) -> bool {
         match self {
-            EHittable::Sphere(sphere) => {
+            Hittable::Sphere(sphere) => {
                 sphere.hit(r, t_min, t_max, rec)
             }
-            EHittable::HittableList(hittablelist) => {
+            Hittable::HittableList(hittablelist) => {
                 hittablelist.hit(r, t_min, t_max, rec)
             }
         }
     }
 }
 
-impl Default for EHittable {
+impl Default for Hittable {
     fn default() -> Self {
-        EHittable::Sphere(Default::default())
+        Hittable::Sphere(Default::default())
     }
 }

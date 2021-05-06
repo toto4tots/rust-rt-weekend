@@ -8,7 +8,6 @@ use crate::{
     ray::ray_color,
     hittable,
     hittable::Sphere,
-    hittable::Hittable,
     hittable::HitRecord,
     hittable_list,
     hittable_list::HittableList,

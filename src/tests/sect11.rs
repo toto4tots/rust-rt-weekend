@@ -54,7 +54,7 @@ pub fn draw() {
             s1.into(), 
             s2.into(),
         ]
-    );    
+    ).into();    
 
     // Camera
     let cam = Camera::new(
@@ -130,7 +130,7 @@ pub fn zoomed() {
             s3.into(),
             s4.into(),
         ]
-    );
+    ).into();
 
     // Camera
     let cam = Camera::new(
@@ -206,7 +206,7 @@ pub fn distant() {
             s3.into(),
             s4.into(),
         ]
-    );
+    ).into();
 
     // Camera
     let cam = Camera::new(

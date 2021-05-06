@@ -7,6 +7,7 @@ use crate::vec3::Vec3;
 use crate::hittable_list::HittableList;
 use crate::vec3::Point;
 use crate::hittable::Sphere;
+use crate::ehittable::Hittable;
 use crate::drawutils::Canvas;
 use crate::{
     rtweekend::random_float,
@@ -82,7 +83,8 @@ pub fn draw() {
     let mut canvas = Canvas::new(image_width, image_height);
 
     // World
-    let world = random_scene();
+    let world: Hittable = random_scene().into();
+
 
     // Camera
     let lookfrom = Point::new(13, 2, 3);

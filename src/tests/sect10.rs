@@ -63,7 +63,7 @@ pub fn draw() {
             s3.into(),
             s4.into(),
         ]
-    );    
+    ).into();    
 
     // Camera
     let cam: Camera = Default::default();
@@ -133,7 +133,7 @@ pub fn draw2() {
             s3.into(),
             s4.into(),
         ]
-    );
+    ).into();
 
     let cam: Camera = Default::default();
 
@@ -209,7 +209,7 @@ pub fn draw3() {
             s4.into(),
             s5.into(),
         ]
-    );    
+    ).into();    
 
     // Camera
     let cam: Camera = Default::default();
