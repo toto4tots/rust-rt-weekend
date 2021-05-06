@@ -51,10 +51,10 @@ pub fn draw() {
 
     let world = HittableList::new(
         vec![
-            Box::new(s1), 
-            Box::new(s2),
+            s1.into(), 
+            s2.into(),
         ]
-    );    
+    ).into();    
 
     // Camera
     let cam = Camera::new(
@@ -125,12 +125,12 @@ pub fn zoomed() {
 
     let world = HittableList::new(
         vec![
-            Box::new(s1), 
-            Box::new(s2),
-            Box::new(s3),
-            Box::new(s4),
+            s1.into(), 
+            s2.into(),
+            s3.into(),
+            s4.into(),
         ]
-    );
+    ).into();
 
     // Camera
     let cam = Camera::new(
@@ -201,12 +201,12 @@ pub fn distant() {
 
     let world = HittableList::new(
         vec![
-            Box::new(s1), 
-            Box::new(s2),
-            Box::new(s3),
-            Box::new(s4),
+            s1.into(), 
+            s2.into(),
+            s3.into(),
+            s4.into(),
         ]
-    );
+    ).into();
 
     // Camera
     let cam = Camera::new(

@@ -7,6 +7,7 @@ use crate::vec3::Vec3;
 use crate::hittable_list::HittableList;
 use crate::vec3::Point;
 use crate::hittable::Sphere;
+use crate::hittable::Hittable;
 use crate::drawutils::Canvas;
 use crate::{
     rtweekend::random_float,
@@ -21,7 +22,7 @@ pub fn random_scene() -> HittableList {
     let mut world: HittableList = Default::default();
     let ground_material = Material::Lambertian(Color::new(0.5, 0.5, 0.5));
     let s = Sphere::new(Point::new(0, -1000, 0), 1000.0, ground_material);
-    world.add(Box::new(s));
+    world.add(s.into());
 
     for a in -11..11 {
         for b in -11..11 {
@@ -35,19 +36,19 @@ pub fn random_scene() -> HittableList {
                     let albedo = vec3::random() * vec3::random();
                     sphere_material = Material::Lambertian(albedo);
                     let new_s = Sphere::new(center, 0.2, sphere_material);
-                    world.add(Box::new(new_s));
+                    world.add(new_s.into());
                 } else if choose_mat < 0.95 {
                     // metal
                     let albedo = vec3::random_with_range(0.5, 1.0);
                     let fuzz = random_float_with_range(0.0, 0.5);
                     sphere_material = Material::metal(albedo, fuzz);
                     let new_s = Sphere::new(center, 0.2, sphere_material);
-                    world.add(Box::new(new_s));
+                    world.add(new_s.into());
                 } else {
                     // glass
                     sphere_material = Material::Dielectric(1.5);
                     let new_s = Sphere::new(center, 0.2, sphere_material);
-                    world.add(Box::new(new_s));
+                    world.add(new_s.into());
                 }
             }
         }
@@ -55,15 +56,15 @@ pub fn random_scene() -> HittableList {
 
     let material1 = Material::Dielectric(1.5);
     let s1 = Sphere::new(Point::new(0, 1, 0), 1.0, material1);
-    world.add(Box::new(s1));
+    world.add(s1.into());
 
     let material2 = Material::Lambertian(Color::new(0.4, 0.2, 0.1));
     let s2 = Sphere::new(Point::new(-4, 1, 0), 1.0, material2);
-    world.add(Box::new(s2));
+    world.add(s2.into());
 
     let material3 = Material::metal(Color::new(0.7, 0.6, 0.5), 0.0);
     let s3 = Sphere::new(Point::new(4, 1, 0), 1.0, material3);
-    world.add(Box::new(s3));
+    world.add(s3.into());
 
     world
 }
@@ -82,7 +83,8 @@ pub fn draw() {
     let mut canvas = Canvas::new(image_width, image_height);
 
     // World
-    let world = random_scene();
+    let world: Hittable = random_scene().into();
+
 
     // Camera
     let lookfrom = Point::new(13, 2, 3);

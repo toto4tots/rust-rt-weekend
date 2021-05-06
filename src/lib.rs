@@ -6,3 +6,5 @@ pub mod hittable_list;
 pub mod rtweekend;
 pub mod camera;
 pub mod material;
+
+pub use vec3::Point;

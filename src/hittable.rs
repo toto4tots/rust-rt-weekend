@@ -6,6 +6,7 @@ use crate::{
     vec3::Vec3,
     vec3::Point,
     ray::Ray,
+    hittable_list::HittableList,
 };
 
 #[derive(Debug, Clone, Copy, Default)]
@@ -26,10 +27,6 @@ impl HitRecord {
     }
 }
 
-pub trait Hittable {
-    fn hit(&self, r: Ray, t_min: f64, t_max: f64, rec: &mut HitRecord) -> bool;
-}
-
 #[derive(Debug, Clone, Copy)]
 pub struct Sphere {
     pub center: Point,
@@ -45,20 +42,8 @@ impl Sphere {
             material,
         }
     }
-}
 
-impl Default for Sphere {
-    fn default() -> Self {
-        Sphere {
-            center: Point::new(0, 0, 0), 
-            radius: 1.0,
-            material: Material::Lambertian(Color::new(0, 0, 0)),
-        }
-    }
-}
-
-impl Hittable for Sphere {
-    fn hit(&self, r: Ray, t_min: f64, t_max: f64, rec: &mut HitRecord) -> bool {
+    pub fn hit(&self, r: Ray, t_min: f64, t_max: f64, rec: &mut HitRecord) -> bool {
         let oc = r.origin - self.center;
         let a = r.direction.mag_squared(); // dot product on itself
         let half_b = oc.dot(r.direction);
@@ -87,5 +72,52 @@ impl Hittable for Sphere {
         rec.material = self.material;
 
         true
+    }    
+}
+
+impl Default for Sphere {
+    fn default() -> Self {
+        Sphere {
+            center: Point::new(0, 0, 0), 
+            radius: 1.0,
+            material: Material::Lambertian(Color::new(0, 0, 0)),
+        }
     }
 }
+
+pub enum Hittable {
+    Sphere(Sphere),
+    HittableList(HittableList),
+}
+
+impl From<Sphere> for Hittable {
+    fn from(sphere: Sphere) -> Hittable {
+        Hittable::Sphere(sphere) 
+    }
+}
+
+impl From<HittableList> for Hittable {
+    fn from(hl: HittableList) -> Hittable {
+        Hittable::HittableList(hl) 
+    }
+}
+
+impl Hittable {
+    pub fn hit(&self, r: Ray, t_min: f64, t_max: f64, rec: &mut HitRecord) -> bool {
+        match self {
+            Hittable::Sphere(sphere) => {
+                sphere.hit(r, t_min, t_max, rec)
+            }
+            Hittable::HittableList(hittablelist) => {
+                hittablelist.hit(r, t_min, t_max, rec)
+            }
+        }
+    }
+}
+
+impl Default for Hittable {
+    fn default() -> Self {
+        Hittable::Sphere(Default::default())
+    }
+}
+

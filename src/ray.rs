@@ -10,7 +10,7 @@ use crate::{
 
 use std::f64::INFINITY;
 
-pub fn ray_color(r: Ray, world: &dyn Hittable, depth: i64) -> vec3::Vec3 {
+pub fn ray_color(r: Ray, world: &Hittable, depth: i64) -> vec3::Vec3 {
     let mut rec = HitRecord::new();
     if depth <= 0 {
         return Color::new(0, 0, 0);

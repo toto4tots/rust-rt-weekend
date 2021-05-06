@@ -8,7 +8,6 @@ use crate::{
     ray::ray_color,
     hittable,
     hittable::Sphere,
-    hittable::Hittable,
     hittable::HitRecord,
     hittable_list,
     hittable_list::HittableList,
@@ -59,7 +58,7 @@ pub fn hittable_list() {
     }    
     {
         let s: Sphere = Default::default();
-        let world = HittableList::new(vec![Box::new(s)]);
+        let world = HittableList::new(vec![s.into()]);
 
     }
 }
