@@ -4,7 +4,7 @@ use crate::{
     vec3::Point,
     vec3::Color,
     vec3::Vec3,
-    ehittable::Hittable,
+    hittable::Hittable,
     hittable::HitRecord,
 };
 

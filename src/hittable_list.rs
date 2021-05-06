@@ -1,6 +1,6 @@
 use crate::{
     hittable::HitRecord,
-    ehittable::Hittable,
+    hittable::Hittable,
     ray::Ray,
 };
 
@@ -33,4 +33,3 @@ impl HittableList {
         hit_anything
     }    
 }
-

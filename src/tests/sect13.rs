@@ -7,7 +7,7 @@ use crate::vec3::Vec3;
 use crate::hittable_list::HittableList;
 use crate::vec3::Point;
 use crate::hittable::Sphere;
-use crate::ehittable::Hittable;
+use crate::hittable::Hittable;
 use crate::drawutils::Canvas;
 use crate::{
     rtweekend::random_float,
