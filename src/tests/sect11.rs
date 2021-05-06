@@ -51,8 +51,8 @@ pub fn draw() {
 
     let world = HittableList::new(
         vec![
-            Box::new(s1), 
-            Box::new(s2),
+            s1.into(), 
+            s2.into(),
         ]
     );    
 
@@ -125,10 +125,10 @@ pub fn zoomed() {
 
     let world = HittableList::new(
         vec![
-            Box::new(s1), 
-            Box::new(s2),
-            Box::new(s3),
-            Box::new(s4),
+            s1.into(), 
+            s2.into(),
+            s3.into(),
+            s4.into(),
         ]
     );
 
@@ -201,10 +201,10 @@ pub fn distant() {
 
     let world = HittableList::new(
         vec![
-            Box::new(s1), 
-            Box::new(s2),
-            Box::new(s3),
-            Box::new(s4),
+            s1.into(), 
+            s2.into(),
+            s3.into(),
+            s4.into(),
         ]
     );
 

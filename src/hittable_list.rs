@@ -1,23 +1,24 @@
 use crate::{
     hittable::Hittable,
     hittable::HitRecord,
+    ehittable::EHittable,
     ray::Ray,
 };
 
 #[derive(Default)]
 pub struct HittableList {
-    pub objects: Vec<Box<dyn Hittable>>
+    pub objects: Vec<EHittable>
 }
 
 impl HittableList {
-    pub fn new (objects: Vec<Box<dyn Hittable>>) -> Self {
+    pub fn new (objects: Vec<EHittable>) -> Self {
         HittableList { objects }
     }
 
-    pub fn add(&mut self, obj: Box<dyn Hittable>) {
+    pub fn add(&mut self, obj: EHittable) {
         self.objects.push(obj);
     }
-    
+
     pub fn hit(&self, r: Ray, t_min: f64, t_max: f64, rec: &mut HitRecord) -> bool {
         let mut temp_rec = HitRecord::new();
         let mut hit_anything = false;
