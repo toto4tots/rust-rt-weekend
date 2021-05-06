@@ -83,5 +83,5 @@ pub fn main() {
 
         }
     }
-    canvas.save("refractionTest.png");
+    canvas.save("refraction.png");
 }

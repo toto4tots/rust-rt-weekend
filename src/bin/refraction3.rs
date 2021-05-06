@@ -89,5 +89,5 @@ pub fn main() {
 
         }
     }
-    canvas.save("hollowTest.png");
+    canvas.save("refraction3.png");
 }

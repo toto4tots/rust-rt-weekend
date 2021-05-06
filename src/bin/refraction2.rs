@@ -82,5 +82,5 @@ pub fn main() {
 
         }
     }
-    canvas.save("refractionTest2.png");
+    canvas.save("refraction2.png");
 }
