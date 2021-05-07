@@ -1,22 +1,25 @@
-use crate::vec3::Color;
-use crate::vec3;
-use crate::camera::Camera;
-use crate::ray::ray_color;
-use crate::ray::Ray;
-use crate::vec3::Vec3;
-use crate::hittable_list::HittableList;
-use crate::vec3::Point;
-use crate::hittable::Sphere;
-use crate::hittable::Hittable;
-use crate::drawutils::Canvas;
-use crate::{
+
+extern crate rust_rt_weekend;
+
+use std::{thread, time};
+use rust_rt_weekend::vec3;
+use rust_rt_weekend::vec3::Color;
+use rust_rt_weekend::camera::Camera;
+use rust_rt_weekend::ray::ray_color;
+use rust_rt_weekend::ray::Ray;
+use rust_rt_weekend::vec3::Vec3;
+use rust_rt_weekend::hittable_list::HittableList;
+use rust_rt_weekend::vec3::Point;
+use rust_rt_weekend::hittable::Sphere;
+use rust_rt_weekend::hittable::Hittable;
+use rust_rt_weekend::drawutils::Canvas;
+use rust_rt_weekend::material::Material;
+use rust_rt_weekend::{
     rtweekend::random_float,
     rtweekend::random_float_with_range,
 };
-use crate::{
-    material,
-    material::Material
-};
+use std::f64::consts::PI;
+
 
 pub fn random_scene() -> HittableList {
     let mut world: HittableList = Default::default();
@@ -69,8 +72,7 @@ pub fn random_scene() -> HittableList {
     world
 }
 
-#[test]
-pub fn draw() {
+pub fn main() {
     // Image 
     let aspect_ratio = 3.0 / 2.0;
     let image_width = 1200;
@@ -114,11 +116,6 @@ pub fn draw() {
 
         }
     }
-    canvas.save("final.png");    
-
-
-
-    
-
-
+    canvas.save("finalTest.png");    
 }
+
