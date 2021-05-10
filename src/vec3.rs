@@ -2,7 +2,7 @@
 use crate::rtweekend::random_float_with_range;
 use crate::rtweekend::random_float;
 use std:: fmt;
-use std::ops::{Add, Sub, Mul};
+use std::ops::{Add, Sub, Mul, Index};
 use std::convert::From;
 
 pub fn close_enough(a: f64, b: f64) -> bool {
@@ -158,6 +158,13 @@ impl<I: Into<Vec3>> Mul<I> for Vec3 {
             self.e[1] * other.e[1],
             self.e[2] * other.e[2]
         )
+    }
+}
+
+impl Index<usize> for Vec3 {
+    type Output = f64;
+    fn index(&self, i: usize) -> &Self::Output {
+        &self.e[i]
     }
 }
 
