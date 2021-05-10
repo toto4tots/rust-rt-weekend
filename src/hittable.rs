@@ -7,6 +7,8 @@ use crate::{
     vec3::Point,
     ray::Ray,
     hittable_list::HittableList,
+    aabb::AABB,
+    aabb::surrounding_box,
 };
 
 #[derive(Debug, Clone, Copy, Default)]
@@ -110,6 +112,33 @@ impl Hittable {
             }
             Hittable::HittableList(hittablelist) => {
                 hittablelist.hit(r, t_min, t_max, rec)
+            }
+        }
+    }
+
+    pub fn bounding_box(&self) -> Option<AABB> {
+        match self {
+            Hittable::Sphere(sphere) => {
+                Some(AABB {
+                    minimum: sphere.center - Vec3::new(sphere.radius, sphere.radius, sphere.radius),
+                    maximum: sphere.center + Vec3::new(sphere.radius, sphere.radius, sphere.radius),
+                })
+            }
+            Hittable::HittableList(hl) => {
+                if hl.empty() {
+                    return None;
+                }
+                let temp_box: AABB = Default::default();
+                let mut output_box: AABB = Default::default();
+                let mut first_box = true;
+                for object in &hl.objects {
+                    if object.bounding_box().is_none() {
+                        return None;
+                    }
+                    output_box = if first_box { temp_box } else { surrounding_box(output_box, temp_box) };
+                    first_box = false;
+                }
+                Some(output_box)
             }
         }
     }
