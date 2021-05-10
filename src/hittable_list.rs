@@ -14,6 +14,10 @@ impl HittableList {
         HittableList { objects }
     }
 
+    pub fn empty(&self) -> bool {
+        self.objects.len() == 0
+    }
+
     pub fn add(&mut self, obj: Hittable) {
         self.objects.push(obj);
     }
