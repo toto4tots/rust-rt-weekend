@@ -5,6 +5,7 @@ use crate::{
     aabb::AABB,
     aabb::surrounding_box,
     hittable::HitRecord,
+    hittable_list::HittableList,
     hittable::Hittable,
     rtweekend::random_int_with_range
 };
@@ -27,6 +28,26 @@ pub struct BvhNode {
 }
 
 impl BvhNode {
+    pub fn from2(mut objects: Vec<Hittable>) -> Hittable {
+        let mut groups = Vec::<Hittable>::new();
+        objects.sort_by(|a, b| {
+            a.bounding_box().unwrap().volume().partial_cmp(&b.bounding_box().unwrap().volume()).unwrap()
+        } );
+        objects.reverse();
+        while objects.len() > 0 {
+            let first = objects.pop().unwrap();
+            let v1 = first.bounding_box().unwrap().volume();
+            let v2 = v1 * 8.0;
+            let mut items = vec![first];
+            while objects.len() > 0 && objects.last().unwrap().bounding_box().unwrap().volume() <= v2 {
+                items.push(objects.pop().unwrap());
+            }
+            groups.push(BvhNode::from(items));
+        }
+
+        HittableList::new(groups).into()
+
+    }
     pub fn from(mut objects: Vec<Hittable>) -> Hittable {
         let end = objects.len();
         Self::new(&mut objects, 0, end, 0)

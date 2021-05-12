@@ -42,6 +42,11 @@ impl AABB {
         }
     }
 
+    pub fn volume(&self) -> f64 {
+        let [x, y, z] = (self.maximum - self.minimum).e;
+        x * y * z
+    }
+
     pub fn hit(&self, r: Ray, t_min0: f64, t_max0: f64) -> bool {
         let mut t_min = t_min0;
         let mut t_max = t_max0;
