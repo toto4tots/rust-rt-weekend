@@ -18,6 +18,7 @@ pub mod rtweekend;
 pub mod camera;
 pub mod material;
 pub mod aabb;
+pub mod bvh;
 
 pub use vec3::Point;
 
