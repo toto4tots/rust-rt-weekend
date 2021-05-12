@@ -25,7 +25,7 @@ use std::f64::consts::PI;
 
 
 pub fn random_scene_opt() -> Hittable {
-    BvhNode::from2(random_scene_vec())
+    BvhNode::from(random_scene_vec())
 }
 
 pub fn random_scene_orig() -> Hittable {
