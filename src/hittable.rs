@@ -9,6 +9,7 @@ use crate::{
     hittable_list::HittableList,
     aabb::AABB,
     aabb::surrounding_box,
+    bvh::BvhNode,
 };
 
 #[derive(Debug, Clone, Copy, Default)]
@@ -90,6 +91,7 @@ impl Default for Sphere {
 pub enum Hittable {
     Sphere(Sphere),
     HittableList(HittableList),
+    BvhNode(BvhNode),
 }
 
 impl From<Sphere> for Hittable {
@@ -104,6 +106,12 @@ impl From<HittableList> for Hittable {
     }
 }
 
+impl From<BvhNode> for Hittable {
+    fn from(bn: BvhNode) -> Hittable {
+        Hittable::BvhNode(bn) 
+    }
+}
+
 impl Hittable {
     pub fn hit(&self, r: Ray, t_min: f64, t_max: f64, rec: &mut HitRecord) -> bool {
         match self {
@@ -113,16 +121,19 @@ impl Hittable {
             Hittable::HittableList(hittablelist) => {
                 hittablelist.hit(r, t_min, t_max, rec)
             }
+            Hittable::BvhNode(node) => {
+                node.hit(r, t_min, t_max, rec)
+            }
         }
     }
 
     pub fn bounding_box(&self) -> Option<AABB> {
         match self {
             Hittable::Sphere(sphere) => {
-                Some(AABB {
-                    minimum: sphere.center - Vec3::new(sphere.radius, sphere.radius, sphere.radius),
-                    maximum: sphere.center + Vec3::new(sphere.radius, sphere.radius, sphere.radius),
-                })
+                Some(AABB::new(
+                    sphere.center - Vec3::new(sphere.radius, sphere.radius, sphere.radius),
+                    sphere.center + Vec3::new(sphere.radius, sphere.radius, sphere.radius),
+                ))
             }
             Hittable::HittableList(hl) => {
                 if hl.empty() {
@@ -139,6 +150,9 @@ impl Hittable {
                     first_box = false;
                 }
                 Some(output_box)
+            }
+            Hittable::BvhNode(bvhnode) => {
+                Some(bvhnode.b)
             }
         }
     }

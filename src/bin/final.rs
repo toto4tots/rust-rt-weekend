@@ -1,6 +1,9 @@
 
 extern crate rust_rt_weekend;
 
+use std::env;
+
+use rust_rt_weekend::bvh::BvhNode;
 use std::{thread, time};
 use rust_rt_weekend::vec3;
 use rust_rt_weekend::vec3::Color;
@@ -21,11 +24,19 @@ use rust_rt_weekend::{
 use std::f64::consts::PI;
 
 
-pub fn random_scene() -> HittableList {
-    let mut world: HittableList = Default::default();
+pub fn random_scene_opt() -> Hittable {
+    BvhNode::from(random_scene_vec())
+}
+
+pub fn random_scene_orig() -> Hittable {
+    HittableList::new(random_scene_vec()).into()
+}
+
+pub fn random_scene_vec() -> Vec<Hittable> {
+    let mut world: Vec<Hittable> = Default::default();
     let ground_material = Material::Lambertian(Color::new(0.5, 0.5, 0.5));
     let s = Sphere::new(Point::new(0, -1000, 0), 1000.0, ground_material);
-    world.add(s.into());
+    world.push(s.into());
 
     for a in -11..11 {
         for b in -11..11 {
@@ -39,19 +50,19 @@ pub fn random_scene() -> HittableList {
                     let albedo = vec3::random() * vec3::random();
                     sphere_material = Material::Lambertian(albedo);
                     let new_s = Sphere::new(center, 0.2, sphere_material);
-                    world.add(new_s.into());
+                    world.push(new_s.into());
                 } else if choose_mat < 0.95 {
                     // metal
                     let albedo = vec3::random_with_range(0.5, 1.0);
                     let fuzz = random_float_with_range(0.0, 0.5);
                     sphere_material = Material::metal(albedo, fuzz);
                     let new_s = Sphere::new(center, 0.2, sphere_material);
-                    world.add(new_s.into());
+                    world.push(new_s.into());
                 } else {
                     // glass
                     sphere_material = Material::Dielectric(1.5);
                     let new_s = Sphere::new(center, 0.2, sphere_material);
-                    world.add(new_s.into());
+                    world.push(new_s.into());
                 }
             }
         }
@@ -59,15 +70,15 @@ pub fn random_scene() -> HittableList {
 
     let material1 = Material::Dielectric(1.5);
     let s1 = Sphere::new(Point::new(0, 1, 0), 1.0, material1);
-    world.add(s1.into());
+    world.push(s1.into());
 
     let material2 = Material::Lambertian(Color::new(0.4, 0.2, 0.1));
     let s2 = Sphere::new(Point::new(-4, 1, 0), 1.0, material2);
-    world.add(s2.into());
+    world.push(s2.into());
 
     let material3 = Material::metal(Color::new(0.7, 0.6, 0.5), 0.0);
     let s3 = Sphere::new(Point::new(4, 1, 0), 1.0, material3);
-    world.add(s3.into());
+    world.push(s3.into());
 
     world
 }
@@ -85,7 +96,19 @@ pub fn main() {
     let mut canvas = Canvas::new(image_width, image_height);
 
     // World
-    let world: Hittable = random_scene().into();
+    let args: Vec<String> = env::args().collect();
+    let arg: Option<&str> = args.get(1).map(|s| s.as_ref());
+    let world: Hittable = match arg {
+        None | Some("opt") => {
+            println!("Using opt");
+            random_scene_opt()
+        }
+        Some("old") => {
+            println!("Using old");
+            random_scene_orig()
+        }
+        Some(s) => panic!("Unrecognized option {}", s),
+    };
 
 
     // Camera
@@ -101,9 +124,9 @@ pub fn main() {
         aspect_ratio
     );
 
+    let start = time::Instant::now();
     // Render 
     for j in (0..image_height).rev() {
-        println!("Scanlines remaining: {}", j);
         for i in 0..image_width {
             let mut pixel_color = Color::new(0, 0, 0);
             for s in 0..samples_per_pixel as usize {
@@ -115,6 +138,8 @@ pub fn main() {
             canvas.set(i, j, pixel_color, samples_per_pixel);
 
         }
+        let now = time::Instant::now();
+        println!("Scanlines remaining: {}, {:?}", j, now - start);
     }
     canvas.save("finalTest.png");    
 }

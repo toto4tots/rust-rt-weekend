@@ -1,6 +1,7 @@
 
 extern crate rust_rt_weekend;
 
+use rust_rt_weekend::bvh::BvhNode;
 use std::{thread, time};
 use rust_rt_weekend::vec3::Color;
 use rust_rt_weekend::camera::Camera;
@@ -56,7 +57,7 @@ pub fn main() {
         material_right
     );
 
-    let world = HittableList::new(
+    let world = BvhNode::from(
         vec![
             s1.into(), 
             s2.into(),
@@ -64,6 +65,15 @@ pub fn main() {
             s4.into(),
         ]
     ).into();    
+
+    // let world = HittableList::new(
+    //     vec![
+    //         s1.into(), 
+    //         s2.into(),
+    //         s3.into(),
+    //         s4.into(),
+    //     ]
+    // ).into();    
 
     // Camera
     let cam: Camera = Default::default();

@@ -2,6 +2,10 @@
 use std::f64::consts::PI;
 use rand::Rng;
 
+pub fn random_int_with_range(a: i32, b: i32) -> i32 {
+    random_float_with_range(a as f64, b as f64) as i32
+}
+
 pub fn random_float() -> f64 {
     // return float [0, 1)
     let mut rng = rand::thread_rng();

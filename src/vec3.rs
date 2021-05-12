@@ -42,7 +42,7 @@ pub fn random_in_hemisphere(normal: Vec3) -> Vec3 {
 
 #[derive(Debug, Clone, Copy, Default)]
 pub struct Vec3 {
-    e: [f64; 3]
+    pub e: [f64; 3]
 }
 
 pub type Color = Vec3;
